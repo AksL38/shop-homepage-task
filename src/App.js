@@ -1,7 +1,88 @@
 import './App.css';
-import {Carousel} from 'react-bootstrap';
+import { Carousel } from 'react-bootstrap';
+import Cart from './Cart';
+import { useState } from 'react';
+import Items from './Items';
 
 function App() {
+  const itemsData = [
+    {
+      title: 'Item One',
+      price: '$24.99',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!',
+      rating: 4,
+      added: false
+    },
+    {
+      title: 'Item Two',
+      price: '$14.99',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+      rating: 5,
+      added: false
+    },
+    {
+      title: 'Item Three',
+      price: '$4.99',
+      description: 'consectetur adipisicing elit. Amet numquam aspernatur!',
+      rating: 3,
+      added: false
+    },
+    {
+      title: 'Item Four',
+      price: '$19.99',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!',
+      rating: 2,
+      added: false
+    },
+    {
+      title: 'Item Five',
+      price: '$29.99',
+      description: 'Lorem ipsum dolor sit amet, Amet numquam aspernatur!',
+      rating: 4,
+      added: false
+    },
+    {
+      title: 'Item Six',
+      price: '$99.99',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+      rating: 3
+    }
+  ];
+
+  const [cart, setCart] = useState([]);
+  const [data, setData] = useState(itemsData);
+
+  const addToCart = (item) => {
+    let added = false;
+    cart.every((val) => {
+      if (val.name === item.name) {
+        added = true;
+        return false;
+      }
+      return true;
+    })
+    if (!added) {setCart([...cart, item])};
+    let updatedData = data.map((val) => {
+      if (val.title === item.name) {
+        val.added = true;
+      }
+      return val;
+    })
+    setData(updatedData);
+  }
+
+  const removeFromCart = (name) => {
+    let updatedCart = cart.filter((val)=> val.name !== name);
+    setCart(updatedCart);
+    let updatedData = data.map((val) => {
+      if (val.title === name) {
+        val.added = false;
+      }
+      return val;
+    })
+    setData(updatedData);
+  }
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -32,14 +113,7 @@ function App() {
       </nav>
       <div className="container">
         <div className="row">
-          <div className="col-lg-3">
-            <h1 className="my-4">Shop Name</h1>
-            <div className="list-group">
-              <span className="linkCursor list-group-item">Category 1</span>
-              <span className="linkCursor list-group-item">Category 2</span>
-              <span className="linkCursor list-group-item">Category 3</span>
-            </div>
-          </div>
+          <Cart cart={cart} render={removeFromCart}></Cart>
           <div className="col-lg-9">
             <Carousel className="my-4">
               <Carousel.Item>
@@ -63,89 +137,9 @@ function App() {
                   alt="Third slide"
                 />
               </Carousel.Item>
-            </Carousel>            
+            </Carousel>
 
-            <div className="row">
-              <div className="col-lg-4 col-md-6 mb-4">
-                <div className="card h-100">
-                  <span className="linkCursor"><img className="card-img-top" src="http://placehold.it/700x400" alt="" /></span>
-                  <div className="card-body">
-                    <h4 className="card-title">
-                      <span className="linkCursor">Item Two</span>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
-                  </div>
-                  <div className="card-footer">
-                    <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 mb-4">
-                <div className="card h-100">
-                  <span className="linkCursor"><img className="card-img-top" src="http://placehold.it/700x400" alt="" /></span>
-                  <div className="card-body">
-                    <h4 className="card-title">
-                      <span className="linkCursor">Item Three</span>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                  </div>
-                  <div className="card-footer">
-                    <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 mb-4">
-                <div className="card h-100">
-                  <span className="linkCursor"><img className="card-img-top" src="http://placehold.it/700x400" alt="" /></span>
-                  <div className="card-body">
-                    <h4 className="card-title">
-                      <span className="linkCursor">Item Four</span>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                  </div>
-                  <div className="card-footer">
-                    <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 mb-4">
-                <div className="card h-100">
-                  <span className="linkCursor"><img className="card-img-top" src="http://placehold.it/700x400" alt="" /></span>
-                  <div className="card-body">
-                    <h4 className="card-title">
-                      <span className="linkCursor">Item Five</span>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
-                  </div>
-                  <div className="card-footer">
-                    <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 mb-4">
-                <div className="card h-100">
-                  <span className="linkCursor"><img className="card-img-top" src="http://placehold.it/700x400" alt="" /></span>
-                  <div className="card-body">
-                    <h4 className="card-title">
-                      <span className="linkCursor">Item Six</span>
-                    </h4>
-                    <h5>$24.99</h5>
-                    <p className="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-                  </div>
-                  <div className="card-footer">
-                    <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Items data = {data} addToCart = {addToCart} removeFromCart={removeFromCart}></Items>
           </div>
         </div>
       </div>
